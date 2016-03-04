@@ -245,6 +245,14 @@
                                     <input type="number" ng-model="vm.request.HostConfig.RestartPolicy.MaximumRetryCount" placeholder="Maximum restart count">
                                 </div>
                             </div>
+                            <h5 class="ui dividing header">网络模式</h5>
+                            <div class="field">
+                                    <select class="ui fluid dropdown" default="0" ng-model="vm.request.HostConfig.NetworkMode">
+                                        <option value="bridge">桥模式</option>
+                                        <option value="host">主机模式</option>
+                                        <option value="none">缺省模式</option>
+                                    </select>
+                            </div>
                             <h5 class="ui dividing header">端口配置</h5>
                             <div class="field">
                                 <div class="ui toggle checkbox">

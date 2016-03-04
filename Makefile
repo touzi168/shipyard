@@ -13,13 +13,13 @@ clean:
 	@rm -rf controller/controller
 
 build:
-	@cd controller && godep go build -a -tags "netgo static_build" -installsuffix netgo
-#	@cd controller && godep go build -a -tags "netgo static_build" -installsuffix netgo -ldflags "-w -X github.com/shipyard/shipyard/version.GitCommit=$(COMMIT)" .
+#	@cd controller && godep go build -a -tags "netgo static_build" -installsuffix netgo
+	@cd controller && godep go build -a -tags "netgo static_build" -installsuffix netgo -ldflags "-w -X github.com/dockerclubgroup/shipyard/version.GitCommit=$(COMMIT)" .
 
 remote-build:
 	@docker build -t shipyard-build -f Dockerfile.build .
 	@rm -f ./controller/controller
-	@cd controller && docker run --rm -w /go/src/github.com/shipyard/shipyard --entrypoint /bin/bash shipyard-build -c "make build 1>&2 && cd controller && tar -czf - controller" | tar zxf -
+	@cd controller && docker run --rm -w /go/src/github.com/dockerclubgroup/shipyard --entrypoint /bin/bash shipyard-build -c "make build 1>&2 && cd controller && tar -czf - controller" | tar zxf -
 
 media:
 	@cd controller/static && bower -s install --allow-root -p | xargs echo > /dev/null
