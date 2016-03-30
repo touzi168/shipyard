@@ -5,7 +5,7 @@ TAG=${TAG:-latest}
 COMMIT=`git rev-parse --short HEAD`
 
 #测试
-IP=192.168.1.105
+IP=127.0.0.1
 
 all: build media
 
@@ -41,6 +41,6 @@ testbuild:
 
 testrun:
 	@cd controller \
-	&& ./controller --debug server --rethinkdb-addr=${IP}:28015 -d tcp://${IP}:2375
+	&& ./controller --debug server --rethinkdb-addr=${IP}:28015 -d tcp://192.168.59.103:2376
 
 .PHONY: all build clean media image test release

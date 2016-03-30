@@ -5,7 +5,7 @@ package version
 
 var (
 	//git 版本
-	Version   = "3.0.2"
+	Version   = "3.0.3"
 	//git 提交头
 	GitCommit = "HEAD"
 )
