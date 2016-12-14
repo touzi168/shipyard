@@ -24,6 +24,7 @@ const (
 	tblNameConfig      = "config"
 	tblNameEvents      = "events"
 	tblNameAccounts    = "accounts"
+	tblNameBooks       = "books"
 	tblNameRoles       = "roles"
 	tblNameServiceKeys = "service_keys"
 	tblNameExtensions  = "extensions"
@@ -37,6 +38,8 @@ const (
 )
 
 var (
+	ErrBookExists                 = errors.New("书籍已存在")
+	ErrBookDoesNotExist           = errors.New("书籍不存在")
 	ErrAccountExists              = errors.New("账户已存在")
 	ErrAccountDoesNotExist        = errors.New("账户不存在")
 	ErrRoleDoesNotExist           = errors.New("角色不存在")
@@ -69,11 +72,15 @@ type (
 
 	Manager interface {
 		Accounts() ([]*auth.Account, error)
+		Books() ([]*auth.Book, error)
 		Account(username string) (*auth.Account, error)
+		Book(bookname string) (*auth.Book, error)
 		Authenticate(username, password string) (bool, error)
 		GetAuthenticator() auth.Authenticator
 		SaveAccount(account *auth.Account) error
 		DeleteAccount(account *auth.Account) error
+		SaveBook(account *auth.Book) error
+		DeleteBook(account *auth.Book) error
 		Roles() ([]*auth.ACL, error)
 		Role(name string) (*auth.ACL, error)
 		Store() *sessions.CookieStore
@@ -156,7 +163,7 @@ func (m DefaultManager) StoreKey() string {
 
 func (m DefaultManager) initdb() {
 	// create tables if needed
-	tables := []string{tblNameConfig, tblNameEvents, tblNameAccounts, tblNameRoles, tblNameConsole, tblNameServiceKeys, tblNameRegistries, tblNameExtensions, tblNameWebhookKeys}
+	tables := []string{tblNameConfig, tblNameEvents, tblNameAccounts, tblNameBooks, tblNameRoles, tblNameConsole, tblNameServiceKeys, tblNameRegistries, tblNameExtensions, tblNameWebhookKeys}
 	for _, tbl := range tables {
 		_, err := r.Table(tbl).Run(m.session)
 		if err != nil {
@@ -444,6 +451,84 @@ func (m DefaultManager) DeleteAccount(account *auth.Account) error {
 	}
 
 	m.logEvent("delete-account", fmt.Sprintf("username=%s", account.Username), []string{"security"})
+
+	return nil
+}
+
+func (m DefaultManager) Books() ([]*auth.Book, error) {
+	res, err := r.Table(tblNameBooks).OrderBy(r.Asc("bookname")).Run(m.session)
+	if err != nil {
+		return nil, err
+	}
+	books := []*auth.Book{}
+	if err := res.All(&books); err != nil {
+		return nil, err
+	}
+	return books, nil
+}
+
+func (m DefaultManager) Book(bookname string) (*auth.Book, error) {
+	res, err := r.Table(tblNameBooks).Filter(map[string]string{"bookname": bookname}).Run(m.session)
+	if err != nil {
+		return nil, err
+
+	}
+	if res.IsNil() {
+		return nil, ErrBookDoesNotExist
+	}
+	var book *auth.Book
+	if err := res.One(&book); err != nil {
+		return nil, err
+	}
+	return book, nil
+}
+
+func (m DefaultManager) SaveBook(book *auth.Book) error {
+	var (
+		eventType string
+	)
+	// check if exists; if so, update
+	acct, err := m.Book(book.BookName)
+	if err != nil && err != ErrBookDoesNotExist {
+		return err
+	}
+
+	// update
+	if acct != nil {
+		updates := map[string]interface{}{
+			"bookname": book.BookName,
+			"bookauthor":  book.BookAuthor,
+			"bookdesc":      book.BookDesc,
+		}
+		if _, err := r.Table(tblNameBooks).Filter(map[string]string{"bookname": book.BookName}).Update(updates).RunWrite(m.session); err != nil {
+			return err
+		}
+
+		eventType = "update-book"
+	} else {
+		if _, err := r.Table(tblNameBooks).Insert(book).RunWrite(m.session); err != nil {
+			return err
+		}
+
+		eventType = "add-book"
+	}
+
+	m.logEvent(eventType, fmt.Sprintf("bookname=%s", book.BookName), []string{"security"})
+
+	return nil
+}
+
+func (m DefaultManager) DeleteBook(book *auth.Book) error {
+	res, err := r.Table(tblNameBooks).Filter(map[string]string{"id": book.ID}).Delete().Run(m.session)
+	if err != nil {
+		return err
+	}
+
+	if res.IsNil() {
+		return ErrBookDoesNotExist
+	}
+
+	m.logEvent("delete-book", fmt.Sprintf("bookname=%s", book.BookName), []string{"security"})
 
 	return nil
 }

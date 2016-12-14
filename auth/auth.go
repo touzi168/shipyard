@@ -24,6 +24,13 @@ type (
 		Roles     []string     `json:"roles,omitempty" gorethink:"roles"`
 	}
 
+	Book struct {
+		ID        string       `json:"id,omitempty" gorethink:"id,omitempty"`
+		BookAuthor string      `json:"bookauthor,omitempty" gorethink:"bookauthor"`
+		BookName  string       `json:"bookname,omitempty" gorethink:"bookname"`
+		BookDesc  string       `json:"bookdesc,omitempty" gorethink:"bookdesc,omitempty"`
+	}
+
 	AuthToken struct {
 		Token     string `json:"auth_token,omitempty" gorethink:"auth_token"`
 		UserAgent string `json:"user_agent,omitempty" gorethink:"user_agent"`
