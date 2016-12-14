@@ -26,7 +26,7 @@
                     username: vm.username, 
                     password: vm.password
                 }).then(function(response) {
-                    $state.transitionTo('dashboard.containers');
+                    $state.transitionTo('dashboard.accounts');
                 }, function(response) {
                     vm.error = response.data;
                 });
