@@ -15,7 +15,7 @@
             });
         $urlRouterProvider.otherwise(function ($injector) {
             var $state = $injector.get('$state');
-            $state.go('dashboard.accounts');
+            $state.go('dashboard.books');
         });
     }
 })();

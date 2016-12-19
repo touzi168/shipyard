@@ -2,26 +2,26 @@
 <div class="row">
     <div class="column">
         <div class="ui segment">
-            <div class="ui form" ng-submit="vm.addAccount()" ng-method="post">
-                <h4 class="ui dividing header">账户详细信息</h4>
-                <label>用户名</label>
+            <div class="ui form" ng-submit="vm.editBook()" ng-method="post">
+                <h4 class="ui dividing header">书籍详细信息</h4>
+                <label>书名</label>
                 <div class="field">
-                    <input type="text" name="username" ng-model="vm.username">
+                    <input type="text" name="bookname" ng-model="vm.bookname">
                 </div>
-                <label>邮箱</label>
+                <label>作者</label>
                 <div class="field">
-                    <input type="text" name="email" ng-model="vm.email">
+                    <input type="text" name="bookauthor" ng-model="vm.bookauthor">
                 </div>
-                <label>密码</label>
+                <label>简介</label>
                 <div class="field">
-                    <input type="password" name="password" ng-model="vm.password">
+                    <input type="text" name="bookdesc" ng-model="vm.bookdesc">
                 </div>
-                <label>角色</label>
+                <label>状态</label>
                 <div class="field">
                     <selectize options="vm.roleOptions" ng-model="vm.userRoles" config="vm.roleConfig"></selectize>
                 </div>
                 <div class="ui hidden divider"></div>
-                <div class="ui green submit button">新增账户</div>
+                <div class="ui green submit button">更新书籍信息</div>
             </div>
         </div>
     </div>
@@ -32,32 +32,32 @@ $(function(){
     $('.ui.form')
         .form({
             onSuccess: function() {
-                vm.addAccount();
+                vm.editBook();
             },
-            username: {
-                identifier : 'username',
+            bookname: {
+                identifier : 'bookname',
                 rules: [
                 {
                     type   : 'empty',
-                    prompt : 'Please enter a username'
+                    prompt : 'Please enter a book name'
                 }
                 ]
             },
-            email: {
-                identifier : 'email',
+            bookauthor: {
+                identifier : 'bookauthor',
                 rules: [
                 {
                     type   : 'empty',
-                    prompt : 'Please enter a email'
+                    prompt : 'Please enter book author'
                 }
                 ]
             },
-            password: {
-                identifier : 'password',
+            bookdesc: {
+                identifier : 'bookdesc',
                 rules: [
                 {
                     type   : 'empty',
-                    prompt : 'Please enter a password'
+                    prompt : 'Please enter book description'
                 }
                 ]
             }
@@ -65,6 +65,4 @@ $(function(){
 
     $('.ui.checkbox').checkbox();
 });
-
-$('.ui.dropdown').dropdown();
 </script>

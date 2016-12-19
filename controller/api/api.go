@@ -122,11 +122,13 @@ func (a *Api) Run() error {
 
 	apiRouter.HandleFunc("/api/books", a.books).Methods("GET")
 	apiRouter.HandleFunc("/api/books", a.saveBook).Methods("POST")
-	apiRouter.HandleFunc("/api/books/{username}", a.book).Methods("GET")
-	apiRouter.HandleFunc("/api/books/{username}", a.deleteBook).Methods("DELETE")
+	apiRouter.HandleFunc("/api/books/{bookname}", a.book).Methods("GET")
+	apiRouter.HandleFunc("/api/books/{bookname}", a.deleteBook).Methods("DELETE")
 
 	apiRouter.HandleFunc("/api/roles", a.roles).Methods("GET")
 	apiRouter.HandleFunc("/api/roles/{name}", a.role).Methods("GET")
+	apiRouter.HandleFunc("/api/statuses", a.statuses).Methods("GET")
+	apiRouter.HandleFunc("/api/status/{name}", a.status).Methods("GET")
 	apiRouter.HandleFunc("/api/nodes", a.nodes).Methods("GET")
 	apiRouter.HandleFunc("/api/nodes/{name}", a.node).Methods("GET")
 	apiRouter.HandleFunc("/api/containers/{id}/scale", a.scaleContainer).Methods("POST")
@@ -183,6 +185,7 @@ func (a *Api) Run() error {
 	// login handler; public
 	loginRouter := mux.NewRouter()
 	loginRouter.HandleFunc("/auth/login", a.login).Methods("POST")
+	loginRouter.HandleFunc("/auth/signup", a.signup).Methods("POST")
 	globalMux.Handle("/auth/", loginRouter)
 	globalMux.Handle("/exec", websocket.Handler(a.execContainer))
 
@@ -298,15 +301,14 @@ func (a *Api) Run() error {
 		// create roles
 		acct := &auth.Account{
 			Username:  "admin",
-			Password:  "shipyard",
-			FirstName: "Shipyard",
-			LastName:  "Admin",
+			Password:  "admin",
+			Email: "admin@sangfor.com.cn",
 			Roles:     []string{"admin"},
 		}
 		if err := controllerManager.SaveAccount(acct); err != nil {
 			log.Fatal(err)
 		}
-		log.Infof("created admin user: username: admin password: shipyard")
+		log.Infof("created admin user: username: admin password: admin")
 	}
 
 	log.Infof("controller listening on %s", a.listenAddr)

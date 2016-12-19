@@ -3,28 +3,32 @@
 
 	angular
 		.module('shipyard.login')
-		.controller('LoginController', LoginController);
+		.controller('SignupController', SignupController);
 
-    LoginController.$inject = ['AuthService', '$state'];
-	function LoginController(AuthService, $state) {
+    SignupController.$inject = ['AuthService', '$state'];
+	function SignupController(AuthService, $state) {
             var vm = this;
             vm.error = "";
             vm.username = "";
             vm.password = "";
-            vm.login = login;
+            vm.confirm = "";
+            vm.email = "";
+            vm.signup = signup;
 
             function isValid() {
                 return $('.ui.form').form('validate form');
             }
 
-            function login() {
+            function signup() {
                 if (!isValid()) {
                     return;
                 }
                 vm.error = "";
-                AuthService.login({
+                AuthService.signup({
                     username: vm.username, 
-                    password: vm.password
+                    password: vm.password,
+                    confirm: vm.confirm, 
+                    email: vm.email
                 }).then(function(response) {
                     $state.transitionTo('dashboard.books');
                 }, function(response) {

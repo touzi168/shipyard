@@ -20,20 +20,32 @@ type (
 		LastName  string       `json:"last_name,omitempty" gorethink:"last_name,omitempty"`
 		Username  string       `json:"username,omitempty" gorethink:"username"`
 		Password  string       `json:"password,omitempty" gorethink:"password"`
+		Email     string       `json:"email,omitempty" gorethink:"email,omitempty"`
 		Tokens    []*AuthToken `json:"-" gorethink:"tokens"`
 		Roles     []string     `json:"roles,omitempty" gorethink:"roles"`
 	}
 
+	SignupInfo struct {
+		ID        string       `json:"id,omitempty" gorethink:"id,omitempty"`
+		Username  string       `json:"username,omitempty" gorethink:"username,omitempty"`
+		Password  string       `json:"password,omitempty" gorethink:"password"`
+		Confirm   string       `json:"confirm,omitempty" gorethink:"confirm"`
+		Email     string       `json:"email,omitempty" gorethink:"email,omitempty"`
+	}
+
 	Book struct {
 		ID        string       `json:"id,omitempty" gorethink:"id,omitempty"`
-		BookAuthor string      `json:"bookauthor,omitempty" gorethink:"bookauthor"`
 		BookName  string       `json:"bookname,omitempty" gorethink:"bookname"`
+		BookAuthor string      `json:"bookauthor,omitempty" gorethink:"bookauthor"`
 		BookDesc  string       `json:"bookdesc,omitempty" gorethink:"bookdesc,omitempty"`
+		BookStatus []string    `json:"bookstatus,omitempty" gorethink:"bookstatus,omitempty"`
+		BookOwer   []string    `json:"bookower,omitempty" gorethink:"bookower,omitempty"`
 	}
 
 	AuthToken struct {
 		Token     string `json:"auth_token,omitempty" gorethink:"auth_token"`
 		UserAgent string `json:"user_agent,omitempty" gorethink:"user_agent"`
+		Role      string `json:"role,omitempty" gorethink:"role"`
 	}
 
 	AccessToken struct {

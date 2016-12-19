@@ -1,16 +1,16 @@
 <div id="remove-modal" class="ui small modal transition">
 <i class="close icon"></i>
 <div class="header">
-    删除账户: {{ vm.selectedAccount.username }}
+    删除书籍: {{ vm.selectedBook.bookname }}
 </div>
 <div class="content">
-    <p>你确认要删除账户?</p>
+    <p>你确认要删除书籍?</p>
 </div>
 <div class="actions">
     <div class="ui negative button">
         不，取消
     </div>
-    <div ng-click="vm.removeAccount()" class="ui positive right labeled icon button">
+    <div ng-click="vm.removeBook()" class="ui positive right labeled icon button">
         是的，确认
         <i class="checkmark icon"></i>
     </div>
@@ -23,52 +23,56 @@
             <div ng-click="vm.refresh()" class="ui small blue labeled icon button">
                 <i class="refresh icon"></i> 刷新
             </div>
-            <div ui-sref="dashboard.addAccount" class="ui small green labeled icon button">
-                <i class="plus icon"></i> 新增账户
+            <div ui-sref="dashboard.addBook" class="ui small green labeled icon button">
+                <i class="plus icon"></i> 新增书籍
             </div>
         </div>
         <div class="right aligned right floated column">
             <div class="ui small icon input">
-                <input ng-model="tableFilter" placeholder="查询账户信息..." reset-field/>
+                <input ng-model="tableFilter" placeholder="查询书籍信息..." reset-field/>
             </div>
         </div>
     </div>
 
-    <div class="row" ng-show="vm.accounts.length === 0">
+    <div class="row" ng-show="vm.books.length === 0">
         <div class="column">
             <div class="ui icon message">
                 <i class="info icon"></i>
                 <div class="content">
                     <div class="header">
-                        账户信息
+                        书籍信息
                     </div>
-                    <p>没有查询到账户资料.</p>
+                    <p>没有查询到书籍资料.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="row" ng-show="filteredAccounts.length>0">
+    <div class="row" ng-show="filteredBooks.length>0">
         <div class="column">
-            <table class="ui sortable celled table" ng-show="vm.accounts">
+            <table class="ui sortable celled table" ng-show="vm.books">
                 <thead>
                     <tr>
-                        <th>用户名</th>
-                        <th>邮箱</th>
-                        <th>角色</th>
+                        <th>书名</th>
+                        <th>作者</th>
+                        <th>简介</th>
+                        <th>状态</th>
+                        <th>借阅人</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="a in filteredAccounts = (vm.accounts | filter:tableFilter)">
-                        <td>{{a.username}}</td>
-                        <td>{{a.email}}</td>
-                        <td><div ng-repeat="r in a.roles" class="ui horizontal label">{{r|roleDisplay}}</div></td>
+                    <tr ng-repeat="a in filteredBooks = (vm.books | filter:tableFilter)">
+                        <td>{{a.bookname}}</td>
+                        <td>{{a.bookauthor}}</td>
+                        <td>{{a.bookdesc}}</td>
+                        <td>{{a.bookstatus}}</td>
+                        <td>{{a.bookower}}</td>
                         <td class="collapsing">
-                            <div ui-sref="dashboard.editAccount({username: a.username})" class="compact ui icon button">
+                            <div ui-sref="dashboard.editBook({bookname: a.bookname})" class="compact ui icon button">
                                 <i class="edit icon"></i>
                             </div>
-                            <div ng-click="vm.showRemoveAccountDialog(a)" class="compact ui icon button red">
+                            <div ng-click="vm.showRemoveBookDialog(a)" class="compact ui icon button red">
                                 <i class="trash icon"></i>
                             </div>
                         </td>
@@ -78,15 +82,15 @@
         </div>
     </div>
 
-    <div class="row" ng-show="vm.accounts.length > 0 && filteredAccounts.length === 0">
+    <div class="row" ng-show="vm.books.length > 0 && filteredBooks.length === 0">
         <div class="column">
             <div class="ui icon message">
                 <i class="info icon"></i>
                 <div class="content">
                     <div class="header">
-                        账户信息
+                        书籍信息
                     </div>
-                    <p>没有查询到您想要的信息</p>
+                    <p>没有查询到您想要的书籍信息</p>
                 </div>
             </div>
         </div>

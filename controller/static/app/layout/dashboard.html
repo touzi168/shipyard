@@ -1,12 +1,15 @@
 <div class="ui fixed inverted main menu">
-<div class="accounts">
-    <a ui-sref="dashboard.accounts" class="title item" id="logo">
-        Dc私有云管理平台
+<div class="books">
+    <a ui-sref="dashboard.books" class="title item" id="logo">
+        图书管理系统
     </a>
-    <a ui-sref="dashboard.accounts" ui-sref-active="active" class="title item">
-        <i class="user icon"></i> 账户管理
+    <a ui-sref="dashboard.books" ui-sref-active="active" class="title item">
+        <i class="grid layout icon"></i> 图书管理
     </a>
-    <a ui-sref="dashboard.events" ui-sref-active="active" class="title item">
+    <a ui-sref="dashboard.accounts" ui-sref-active="active" class="{{ display }}">
+        <i class="user icon" hidden="hidden"></i> 账户管理
+    </a>
+    <a ui-sref="dashboard.events" ui-sref-active="active" class="{{ display }}">
         <i class="browser icon"></i> 日志事件
     </a>
     <div class="ui right inverted menu">

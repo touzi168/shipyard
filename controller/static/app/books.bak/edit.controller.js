@@ -2,20 +2,22 @@
     'use strict';
 
     angular
-        .module('shipyard.accounts')
-        .controller('AccountsEditController', AccountsEditController);
+        .module('shipyard.books')
+        .controller('BooksEditController', BooksEditController);
 
-    AccountsEditController.$inject = ['account','roles', '$http', '$state'];
-    function AccountsEditController(account, roles, $http, $state) {
+    BooksEditController.$inject = ['book','roles', '$http', '$state'];
+    function BooksEditController(book, roles, $http, $state) {
         var vm = this;
-        vm.account = account;
-        vm.editAccount = editAccount;
+        vm.book = book;
+        vm.editBook = editBook;
         vm.request = {};
         vm.password = null;
-        vm.email = account.email;
+        vm.bookname = book.bookname;
+        vm.bookauthor = book.bookauthor;
+        vm.bookdesc = book.bookdesc;
         vm.request = null;
         vm.roles = roles;
-        vm.userRoles = account.roles;
+        vm.userRoles = book.roles;
         vm.roleOptions = vm.roles;
         vm.roleConfig = {
             create: false,
@@ -30,20 +32,19 @@
             return $('.ui.form').form('validate form');
         }
 
-        function editAccount() {
+        function editBook() {
             if (!isValid()) {
                 return;
             }
             vm.request = {
-                username: account.username,
-                password: vm.password,
-                email: vm.email,
-                roles: vm.userRoles
+                bookname: book.bookname,
+                bookauthor: vm.bookauthor,
+                bookdesc: vm.bookdesc,
             }
             $http
-                .post('/api/accounts', vm.request)
+                .post('/api/books', vm.request)
                 .success(function(data, status, headers, config) {
-                    $state.transitionTo('dashboard.accounts');
+                    $state.transitionTo('dashboard.books');
                 })
             .error(function(data, status, headers, config) {
                 vm.error = data;

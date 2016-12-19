@@ -11,6 +11,12 @@
 
                     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
                         $rootScope.username = AuthService.getUsername();
+                        $rootScope.userrole = AuthService.getRole();
+			if ($rootScope.userrole == "user") {
+				$rootScope.display = "hidden";
+			} else {
+				$rootScope.display = "title item";
+			}
                     });
 
                     $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams) {

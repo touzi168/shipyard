@@ -1,0 +1,72 @@
+<div class="ui padded grid">
+<div class="row">
+    <div class="column">
+        <div class="ui segment">
+            <div class="ui form" ng-submit="vm.editBook()" ng-method="post">
+                <h4 class="ui dividing header">书籍详细信息</h4>
+                <label>书名</label>
+                <div class="field">
+                    <input type="text" name="bookname" ng-model="vm.bookname">
+                </div>
+                <label>作者</label>
+                <div class="field">
+                    <input type="text" name="bookauthor" ng-model="vm.bookauthor">
+                </div>
+                <label>简介</label>
+                <div class="field">
+                    <input type="text" name="bookdesc" ng-model="vm.bookdesc">
+                </div>
+                <label>状态</label>
+                <div class="field">
+                    <selectize options="vm.statusOptions" ng-model="vm.bookStatuses" config="vm.statusConfig"></selectize>
+                </div>
+                <label>借阅人</label>
+                <div class="field">
+                    <selectize options="vm.owerOptions" ng-model="vm.bookOwers" config="vm.owerConfig"></selectize>
+                </div>
+                <div class="ui hidden divider"></div>
+                <div class="ui green submit button">更新书籍信息</div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+$(function(){
+    $('.ui.form')
+        .form({
+            onSuccess: function() {
+                vm.editBook();
+            },
+            bookname: {
+                identifier : 'bookname',
+                rules: [
+                {
+                    type   : 'empty',
+                    prompt : 'Please enter book name'
+                }
+                ]
+            },
+            bookauthor: {
+                identifier : 'bookauthor',
+                rules: [
+                {
+                    type   : 'empty',
+                    prompt : 'Please enter book author'
+                }
+                ]
+            },
+            bookdesc: {
+                identifier : 'bookdesc',
+                rules: [
+                {
+                    type   : 'empty',
+                    prompt : 'Please enter book description'
+                }
+                ]
+            }
+        });
+
+    $('.ui.checkbox').checkbox();
+});
+</script>

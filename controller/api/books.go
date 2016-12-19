@@ -42,11 +42,12 @@ func (a *Api) saveBook(w http.ResponseWriter, r *http.Request) {
 
 func (a *Api) book(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	username := vars["username"]
+	bookname := vars["bookname"]
+	log.Debugf("updated book: name=%s", bookname)
 
-	book, err := a.manager.Book(username)
+	book, err := a.manager.Book(bookname)
 	if err != nil {
-		log.Errorf("error deleting book: %s", err)
+		log.Errorf("error query book: %s", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -56,11 +57,12 @@ func (a *Api) book(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
 func (a *Api) deleteBook(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	username := vars["username"]
+	bookname := vars["bookname"]
 
-	book, err := a.manager.Book(username)
+	book, err := a.manager.Book(bookname)
 	if err != nil {
 		log.Errorf("error deleting book: %s", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -72,6 +74,6 @@ func (a *Api) deleteBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Infof("deleted book: username=%s id=%s", book.BookName, book.ID)
+	log.Infof("deleted book: bookname=%s id=%s", book.BookName, book.ID)
 	w.WriteHeader(http.StatusNoContent)
 }

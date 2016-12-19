@@ -16,6 +16,13 @@
 	            controllerAs: 'vm',
                 authenticate: false
 		})
+		.state('signup', {
+				url: '/signup',
+	            templateUrl: 'app/login/signup.html',
+	            controller: 'SignupController',
+	            controllerAs: 'vm',
+                authenticate: false
+		})
                 .state('403', {
                     url: '/403',
                     templateUrl: 'app/login/403.html',

@@ -83,6 +83,8 @@ type (
 		DeleteBook(account *auth.Book) error
 		Roles() ([]*auth.ACL, error)
 		Role(name string) (*auth.ACL, error)
+		Statuses() ([]*auth.STATUS, error)
+		Status(name string) (*auth.STATUS, error)
 		Store() *sessions.CookieStore
 		StoreKey() string
 		Container(id string) (*dockerclient.ContainerInfo, error)
@@ -413,9 +415,8 @@ func (m DefaultManager) SaveAccount(account *auth.Account) error {
 	// update
 	if acct != nil {
 		updates := map[string]interface{}{
-			"first_name": account.FirstName,
-			"last_name":  account.LastName,
-			"roles":      account.Roles,
+			"email": account.Email,
+			"roles": account.Roles,
 		}
 		if account.Password != "" {
 			updates["password"] = hash
@@ -468,6 +469,7 @@ func (m DefaultManager) Books() ([]*auth.Book, error) {
 }
 
 func (m DefaultManager) Book(bookname string) (*auth.Book, error) {
+	log.Warnf("bookname: %s", bookname)
 	res, err := r.Table(tblNameBooks).Filter(map[string]string{"bookname": bookname}).Run(m.session)
 	if err != nil {
 		return nil, err
@@ -496,9 +498,11 @@ func (m DefaultManager) SaveBook(book *auth.Book) error {
 	// update
 	if acct != nil {
 		updates := map[string]interface{}{
-			"bookname": book.BookName,
+			"bookname":    book.BookName,
 			"bookauthor":  book.BookAuthor,
-			"bookdesc":      book.BookDesc,
+			"bookdesc":    book.BookDesc,
+			"bookstatus":  book.BookStatus,
+			"bookower":    book.BookOwer,
 		}
 		if _, err := r.Table(tblNameBooks).Filter(map[string]string{"bookname": book.BookName}).Update(updates).RunWrite(m.session); err != nil {
 			return err
@@ -533,9 +537,29 @@ func (m DefaultManager) DeleteBook(book *auth.Book) error {
 	return nil
 }
 
+func (m DefaultManager) Statuses() ([]*auth.STATUS, error) {
+	statuses := auth.DefaultStatus()
+	return statuses, nil
+}
+
+func (m DefaultManager) Status(name string) (*auth.STATUS, error) {
+	sts, err := m.Statuses()
+	if err != nil {
+		return nil, err
+	}
+
+	for _, s := range sts {
+		if s.StatusName == name {
+			return s, nil
+		}
+	}
+
+	return nil, nil
+}
+
 func (m DefaultManager) Roles() ([]*auth.ACL, error) {
-	roles := auth.DefaultACLs()
-	return roles, nil
+	acls := auth.DefaultACLs()
+	return acls, nil
 }
 
 func (m DefaultManager) Role(name string) (*auth.ACL, error) {
