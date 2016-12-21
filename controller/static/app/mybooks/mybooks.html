@@ -1,7 +1,7 @@
 <div id="remove-modal" class="ui small modal transition">
 <i class="close icon"></i>
 <div class="header">
-    删除书籍: {{ vm.selectedBook.bookname }}
+    删除书籍: {{ vm.selectedMyBook.bookname }}
 </div>
 <div class="content">
     <p>你确认要删除书籍?</p>
@@ -10,7 +10,7 @@
     <div class="ui negative button">
         不，取消
     </div>
-    <div ng-click="vm.removeBook()" class="ui positive right labeled icon button">
+    <div ng-click="vm.removeMyBook()" class="ui positive right labeled icon button">
         是的，确认
         <i class="checkmark icon"></i>
     </div>
@@ -20,7 +20,7 @@
 <div id="return-modal" class="ui small modal transition">
 <i class="close icon"></i>
 <div class="header">
-    归还书籍: {{ vm.selectedBook.bookname }}
+    归还书籍: {{ vm.selectedMyBook.bookname }}
 </div>
 <div class="content">
     <p>你确认要归还书籍?</p>
@@ -29,7 +29,7 @@
     <div class="ui negative button">
         不，取消
     </div>
-    <div ng-click="vm.returnBook()" class="ui positive right labeled icon button">
+    <div ng-click="vm.returnMyBook()" class="ui positive right labeled icon button">
         是的，确认
         <i class="checkmark icon"></i>
     </div>
@@ -39,7 +39,7 @@
 <div id="borrow-modal" class="ui small modal transition">
 <i class="close icon"></i>
 <div class="header">
-    借阅书籍: {{ vm.selectedBook.bookname }}
+    借阅书籍: {{ vm.selectedMyBook.bookname }}
 </div>
 <div class="content">
     <p>你确认要借阅书籍?</p>
@@ -48,7 +48,7 @@
     <div class="ui negative button">
         不，取消
     </div>
-    <div ng-click="vm.borrowBook()" class="ui positive right labeled icon button">
+    <div ng-click="vm.borrowMyBook()" class="ui positive right labeled icon button">
         是的，确认
         <i class="checkmark icon"></i>
     </div>
@@ -61,9 +61,6 @@
             <div ng-click="vm.refresh()" class="ui small blue labeled icon button">
                 <i class="refresh icon"></i> 刷新
             </div>
-            <div ui-sref="dashboard.addBook" class="ui small green labeled icon button">
-                <i class="plus icon"></i> 新增书籍
-            </div>
         </div>
         <div class="right aligned right floated column">
             <div class="ui small icon input">
@@ -72,7 +69,7 @@
         </div>
     </div>
 
-    <div class="row" ng-show="vm.books.length === 0">
+    <div class="row" ng-show="vm.mybooks.length === 0">
         <div class="column">
             <div class="ui icon message">
                 <i class="info icon"></i>
@@ -86,9 +83,9 @@
         </div>
     </div>
 
-    <div class="row" ng-show="filteredBooks.length>0">
+    <div class="row" ng-show="filteredMyBooks.length>0">
         <div class="column">
-            <table class="ui sortable celled table" ng-show="vm.books">
+            <table class="ui sortable celled table" ng-show="vm.mybooks">
                 <thead>
                     <tr>
                         <th>书名</th>
@@ -100,7 +97,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="a in filteredBooks = (vm.books | filter:tableFilter)">
+                    <tr ng-repeat="a in filteredMyBooks = (vm.mybooks | filter:tableFilter)">
                         <td>{{a.bookname}}</td>
                         <td>{{a.bookauthor}}</td>
                         <td>{{a.bookdesc}}</td>
@@ -118,26 +115,27 @@
                             </div>
                         </td>
                         <td class="collapsing">
-                            <div ng-if="vm.userrole == 'admin'" ui-sref="dashboard.editBook({bookname: a.bookname})" class="compact ui icon button green">
+                            <div ng-if="vm.userrole == 'admin'" ui-sref="dashboard.editMyBook({bookname: a.bookname})" class="compact ui icon button green">
                                 <i class="edit icon"></i>
                             </div>
-                            <div ng-if="a.bookstatus == 'available'" ng-click="vm.showBorrowBookDialog(a)" class="compact ui icon button green">
+                            <div ng-if="a.bookstatus == 'available'" ng-click="vm.showBorrowMyBookDialog(a)" class="compact ui icon button green">
                                 <i class="unlock icon"></i>
                             </div>
-                            <div ng-if="a.bookstatus == 'lended'" ng-click="vm.showReturnBookDialog(a)" class="compact ui icon button yellow">
+                            <div ng-if="a.bookstatus == 'lended'" ng-click="vm.showReturnMyBookDialog(a)" class="compact ui icon button yellow">
                                 <i class="lock icon"></i>
                             </div>
-                            <div ng-if="vm.userrole == 'admin'" ng-click="vm.showRemoveBookDialog(a)" class="compact ui icon button red">
+                            <div ng-if="vm.userrole == 'admin'" ng-click="vm.showRemoveMyBookDialog(a)" class="compact ui icon button red">
                                 <i class="trash icon"></i>
                             </div>
                         </td>
+			</div>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <div class="row" ng-show="vm.books.length > 0 && filteredBooks.length === 0">
+    <div class="row" ng-show="vm.mybooks.length > 0 && filteredMyBooks.length === 0">
         <div class="column">
             <div class="ui icon message">
                 <i class="info icon"></i>

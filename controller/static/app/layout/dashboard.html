@@ -4,13 +4,16 @@
         图书管理系统
     </a>
     <a ui-sref="dashboard.books" ui-sref-active="active" class="title item">
-        <i class="grid layout icon"></i> 图书管理
+        <i class="book icon"></i> 图书管理
     </a>
-    <a ui-sref="dashboard.accounts" ui-sref-active="active" class="{{ display }}">
-        <i class="user icon" hidden="hidden"></i> 账户管理
+    <a ng-if="userrole == 'admin'" ui-sref="dashboard.accounts" ui-sref-active="active" class="title item">
+        <i class="user icon"></i> 账户管理
     </a>
-    <a ui-sref="dashboard.events" ui-sref-active="active" class="{{ display }}">
+    <a ng-if="userrole == 'admin'" ui-sref="dashboard.events" ui-sref-active="active" class="title item">
         <i class="browser icon"></i> 日志事件
+    </a>
+    <a ui-sref="dashboard.mybooks" ui-sref-active="active" class="title item">
+        <i class="home icon"></i> 我的图书
     </a>
     <div class="ui right inverted menu">
         <div class="ui item">

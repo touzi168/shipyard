@@ -4,6 +4,7 @@
     angular
         .module('shipyard', [
                 'shipyard.books',
+                'shipyard.mybooks',
                 'shipyard.accounts',
                 'shipyard.core',
                 'shipyard.services',

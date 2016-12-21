@@ -2,13 +2,13 @@
 	'use strict';
 
 	angular
-    	    .module('shipyard.books')
-            .factory('BooksService', BooksService);
+    	    .module('shipyard.mybooks')
+            .factory('MyBooksService', MyBooksService);
 
-	BooksService.$inject = ['$http'];
-        function BooksService($http) {
+	MyBooksService.$inject = ['$http'];
+        function MyBooksService($http) {
             return {
-                list: function() {
+                list: function(username) {
                     var promise = $http
                         .get('/api/books')
                         .then(function(response) {
@@ -56,7 +56,7 @@
                         });
                     return promise;
                 },
-                getBook: function(bookname) {
+                getMyBook: function(bookname) {
                     var promise = $http
                         .get('/api/books/' + bookname)
                         .then(function(response) {
@@ -64,44 +64,44 @@
                         });
                     return promise;
                 },
-                removeBook: function(book) {
+                removeMyBook: function(mybook) {
                     var promise = $http
-                        .delete('/api/books/'+book.bookname)
+                        .delete('/api/books/'+mybook.bookname)
                         .then(function(response) {
                             return response.data;
                         });
                     return promise;
                 },
-                returnBook: function(book) {
+                returnMyBook: function(mybook) {
                     var request = {
-                        bookname: book.bookname,
-                        bookauthor: book.bookauthor,
-                        bookdesc: book.bookdesc,
+                        bookname: mybook.bookname,
+                        bookauthor: mybook.bookauthor,
+                        bookdesc: mybook.bookdesc,
                         bookstatus: ['available'],
                         bookower: null
                     }
                     var promise = $http
                         .post('/api/books', request)
                         .success(function(data, status, headers, config) {
-                            $state.transitionTo('dashboard.books');
+                            $state.transitionTo('dashboard.mybooks');
                         })
                         .error(function(data, status, headers, config) {
                             vm.error = data;
                         });
                     return promise;
                 },
-                borrowBook: function(book, username) {
+                borrowMyBook: function(mybook, username) {
                     var request = {
-                        bookname: book.bookname,
-                        bookauthor: book.bookauthor,
-                        bookdesc: book.bookdesc,
+                        bookname: mybook.bookname,
+                        bookauthor: mybook.bookauthor,
+                        bookdesc: mybook.bookdesc,
                         bookstatus: ['lended'],
                         bookower: [username]
                     }
                     var promise = $http
                         .post('/api/books', request)
                         .success(function(data, status, headers, config) {
-                            $state.transitionTo('dashboard.books');
+                            $state.transitionTo('dashboard.mybooks');
                         })
                         .error(function(data, status, headers, config) {
                             vm.error = data;
